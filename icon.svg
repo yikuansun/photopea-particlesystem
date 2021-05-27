@@ -1,0 +1,10 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+	<title>Emojione_BW_2728-svg</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #d5d5d5 } 
+	</style>
+	<path id="Layer" class="shp0" d="M22.63 2C22.63 17.83 14.07 32 2 32C14.07 32 22.63 46.17 22.63 62C22.63 46.17 31.18 32 43.25 32C31.18 32 22.63 17.83 22.63 2Z" />
+	<path id="Layer" class="shp0" d="M47 32C47 39.92 42.72 47 36.69 47C42.72 47 47 54.08 47 62C47 54.08 51.28 47 57.31 47C51.28 47 47 39.92 47 32Z" />
+	<path id="Layer" class="shp0" d="M51.69 2C51.69 9.92 47.41 17 41.38 17C47.41 17 51.69 24.08 51.69 32C51.69 24.08 55.97 17 62 17C55.97 17 51.69 9.92 51.69 2Z" />
+</svg>
