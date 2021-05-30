@@ -12,8 +12,8 @@ function run_simulation(emitter_settings, frames) {
 }
 
 function render_output(particles_array) {
-    var svg = document.querySelector("svg");
     var svgns = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgns, "svg");
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
         img.setAttribute("x", particle.x - particle.w);
@@ -22,6 +22,13 @@ function render_output(particles_array) {
         img.setAttribute("height", particle.h);
         svg.appendChild(particle);
     }
+    svg.style.display = "none";
+    document.body.appendChild(svg);
+    var outstring = "data:image/svg+xml;base64," + window.btoa(
+        (new XMLSerializer()).serializeToString(svg)
+    );
+    svg.remove();
+    return outstring;
 }
 
 function emit_new(emitter_settings, rng) {
