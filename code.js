@@ -30,6 +30,7 @@ function render_output(particles_array) {
         img.setAttribute("y", particle.y - particle.h);
         img.setAttribute("width", particle.w);
         img.setAttribute("height", particle.h);
+        img.setAttribute("transform", `rotate(${particle.angle * 180 / Math.PI})`);
         svg.appendChild(img);
     }
     document.body.appendChild(svg);
