@@ -15,12 +15,14 @@ function render_output(particles_array) {
     }
 }
 
-function emit_new(emitter_settings) {
+function emit_new(emitter_settings, rng) {
+    //var rng = new Math.seedrandom(emitter_settings.seed);
     var particle = {
         x: emitter_settings.startX,
-        y: emitter_settings.startY
+        y: emitter_settings.startY,
+        angle: emitter_settings.angle + rng() * emitter_settings.angle_variance
     }
-    emitter_settings.angle;
+    return particle;
 }
 
 // shoot particles in a line based on starting point, angle
