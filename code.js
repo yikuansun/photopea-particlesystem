@@ -16,6 +16,7 @@ function render_output(particles_array) {
     var svg = document.createElementNS(svgns, "svg");
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
+        img.setAttribute("href", "default_textures/whiteorb.png");
         img.setAttribute("x", particle.x - particle.w);
         img.setAttribute("y", particle.y - particle.h);
         img.setAttribute("width", particle.w);
