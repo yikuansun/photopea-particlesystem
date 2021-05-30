@@ -36,6 +36,8 @@ function emit_new(emitter_settings, rng) {
     var particle = {
         x: emitter_settings.startX,
         y: emitter_settings.startY,
+        w: emitter_settings.particleWidth,
+        h: emitter_settings.particleHeight,
         angle: emitter_settings.angle + rng() * emitter_settings.angle_variance
     }
     return particle;
