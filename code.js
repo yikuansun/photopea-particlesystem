@@ -1,4 +1,9 @@
-function simulation_frame(particles_array) {
+function run_simulation(emitter_settings, frames) {
+    var particles_array = [];
+    var rng = new Math.seedrandom(emitter_settings.seed); 
+    for (var i = 0; i < frames; i++) {
+        particles_array.push(emit_new(emitter_settings, rng));
+    }
     return particles_array;
 }
 
@@ -16,7 +21,6 @@ function render_output(particles_array) {
 }
 
 function emit_new(emitter_settings, rng) {
-    //var rng = new Math.seedrandom(emitter_settings.seed);
     var particle = {
         x: emitter_settings.startX,
         y: emitter_settings.startY,
