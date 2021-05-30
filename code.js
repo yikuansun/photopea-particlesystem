@@ -14,3 +14,6 @@ function render_output(particles_array) {
         svg.appendChild(particle)
     }
 }
+
+// shoot particles in a line based on starting point, angle
+// allow the emitter to vary the angles randomly
