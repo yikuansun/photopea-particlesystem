@@ -16,14 +16,13 @@ function render_output(particles_array) {
     var svg = document.createElementNS(svgns, "svg");
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
-        img.setAttribute("href", "default_textures/whiteorb.png");
+        img.setAttribute("href", "https://raw.githubusercontent.com/yikuansun/photopea-particlesystem/master/default_textures/whiteorb.png");
         img.setAttribute("x", particle.x - particle.w);
         img.setAttribute("y", particle.y - particle.h);
         img.setAttribute("width", particle.w);
         img.setAttribute("height", particle.h);
-        svg.appendChild(particle);
+        svg.appendChild(img);
     }
-    svg.style.display = "none";
     document.body.appendChild(svg);
     var outstring = "data:image/svg+xml;base64," + window.btoa(
         (new XMLSerializer()).serializeToString(svg)
@@ -43,5 +42,15 @@ function emit_new(emitter_settings, rng) {
     return particle;
 }
 
-// shoot particles in a line based on starting point, angle
-// allow the emitter to vary the angles randomly
+console.log(render_output(run_simulation(
+    {
+        startX: 200,
+        startY: 200,
+        particleWidth: 25,
+        particleHeight: 25,
+        angle: Math.PI,
+        angle_variance: Math.PI / 10,
+        period: 10
+    },
+    100
+)));
