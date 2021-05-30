@@ -3,6 +3,10 @@ function run_simulation(emitter_settings, frames) {
     var rng = new Math.seedrandom(emitter_settings.seed); 
     for (var i = 0; i < frames; i++) {
         particles_array.push(emit_new(emitter_settings, rng));
+        for (var particle of particles_array) {
+            particle.x += Math.cos(particle.angle);
+            particle.y += Math.sin(particle.angle);
+        }
     }
     return particles_array;
 }
