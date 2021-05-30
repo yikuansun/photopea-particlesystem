@@ -15,5 +15,13 @@ function render_output(particles_array) {
     }
 }
 
+function emit_new(emitter_settings) {
+    var particle = {
+        x: emitter_settings.startX,
+        y: emitter_settings.startY
+    }
+    emitter_settings.angle;
+}
+
 // shoot particles in a line based on starting point, angle
 // allow the emitter to vary the angles randomly
