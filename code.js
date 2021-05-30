@@ -1,3 +1,10 @@
+const doc_dimensions = {
+    width: parseFloat((new URLSearchParams(location.search)).get("docWidth")),
+    height: parseFloat((new URLSearchParams(location.search)).get("docHeight"))
+};
+
+if (isNaN(doc_dimensions.width) || isNaN(doc_dimensions.height)) location.replace("index.html");
+
 function run_simulation(emitter_settings, frames) {
     var particles_array = [];
     var rng = new Math.seedrandom(emitter_settings.seed); 
@@ -14,6 +21,8 @@ function run_simulation(emitter_settings, frames) {
 function render_output(particles_array) {
     var svgns = "http://www.w3.org/2000/svg";
     var svg = document.createElementNS(svgns, "svg");
+    svg.setAttribute("width", doc_dimensions.width);
+    svg.setAttribute("height", doc_dimensions.height);
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
         img.setAttribute("href", "https://raw.githubusercontent.com/yikuansun/photopea-particlesystem/master/default_textures/whiteorb.png");
