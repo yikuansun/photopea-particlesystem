@@ -60,7 +60,8 @@ console.log(render_output(run_simulation(
         particleHeight: 25,
         angle: Math.PI,
         angle_variance: Math.PI / 5,
-        period: 10
+        period: 10,
+        seed: 69
     },
     500
 )));
