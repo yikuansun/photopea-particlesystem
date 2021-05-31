@@ -54,13 +54,13 @@ function emit_new(emitter_settings, rng) {
 
 console.log(render_output(run_simulation(
     {
-        startX: 200,
-        startY: 200,
+        startX: 960,
+        startY: 540,
         particleWidth: 25,
         particleHeight: 25,
         angle: Math.PI,
-        angle_variance: Math.PI / 10,
+        angle_variance: Math.PI * 2,
         period: 10
     },
-    100
+    500
 )));
