@@ -65,3 +65,17 @@ console.log(render_output(run_simulation(
     },
     500
 )));
+
+Photopea.runScript(window.parent, `app.open("${render_output(run_simulation(
+    {
+        startX: 960,
+        startY: 540,
+        particleWidth: 25,
+        particleHeight: 25,
+        angle: Math.PI,
+        angle_variance: Math.PI / 5,
+        period: 10,
+        seed: 69
+    },
+    500
+))}", null, true);`);
