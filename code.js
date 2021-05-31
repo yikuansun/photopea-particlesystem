@@ -47,7 +47,7 @@ function emit_new(emitter_settings, rng) {
         y: emitter_settings.startY,
         w: emitter_settings.particleWidth,
         h: emitter_settings.particleHeight,
-        angle: emitter_settings.angle + rng() * emitter_settings.angle_variance
+        angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
     }
     return particle;
 }
@@ -59,7 +59,7 @@ console.log(render_output(run_simulation(
         particleWidth: 25,
         particleHeight: 25,
         angle: Math.PI,
-        angle_variance: Math.PI * 2,
+        angle_variance: Math.PI / 5,
         period: 10
     },
     500
