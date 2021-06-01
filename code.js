@@ -18,14 +18,14 @@ function run_simulation(emitter_settings, frames) {
     return particles_array;
 }
 
-function render_output(particles_array) {
+async function render_output(particles_array) {
     var svgns = "http://www.w3.org/2000/svg";
     var svg = document.createElementNS(svgns, "svg");
     svg.setAttribute("width", doc_dimensions.width);
     svg.setAttribute("height", doc_dimensions.height);
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
-        img.setAttribute("href", "https://raw.githubusercontent.com/yikuansun/photopea-particlesystem/master/default_textures/whiteorb.png");
+        img.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png"));
         img.setAttribute("x", particle.x - particle.w);
         img.setAttribute("y", particle.y - particle.h);
         img.setAttribute("width", particle.w);
@@ -34,9 +34,7 @@ function render_output(particles_array) {
         svg.appendChild(img);
     }
     document.body.appendChild(svg);
-    var outstring = "data:image/svg+xml;base64," + window.btoa(
-        (new XMLSerializer()).serializeToString(svg)
-    );
+    var outstring = await rasterize(svg);
     svg.remove();
     return outstring;
 }
@@ -52,7 +50,7 @@ function emit_new(emitter_settings, rng) {
     return particle;
 }
 
-console.log(render_output(run_simulation(
+render_output(run_simulation(
     {
         startX: 960,
         startY: 540,
@@ -64,9 +62,11 @@ console.log(render_output(run_simulation(
         seed: 69
     },
     500
-)));
+)).then(function(e) {
+    console.log(e);
+});
 
-Photopea.runScript(window.parent, `app.open("${render_output(run_simulation(
+render_output(run_simulation(
     {
         startX: 960,
         startY: 540,
@@ -78,4 +78,6 @@ Photopea.runScript(window.parent, `app.open("${render_output(run_simulation(
         seed: 69
     },
     500
-))}", null, true);`);
+)).then(async function(data) {
+    Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
+});
