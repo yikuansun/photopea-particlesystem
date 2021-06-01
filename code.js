@@ -33,7 +33,7 @@ async function render_output(particles_array) {
         img.setAttribute("transform", `rotate(${particle.angle * 180 / Math.PI} ${particle.x} ${particle.y})`);
         svg.appendChild(img);
     }
-    document.body.appendChild(svg);
+    document.querySelector("#hidden_content").appendChild(svg);
     var outstring = await rasterize(svg);
     svg.remove();
     return outstring;
