@@ -5,14 +5,27 @@ const doc_dimensions = {
 
 if (isNaN(doc_dimensions.width) || isNaN(doc_dimensions.height)) location.replace("index.html");
 
-function run_simulation(emitter_settings, frames) {
+function run_simulation(emitter_settings, frames, particle_settings) {
     var particles_array = [];
     var rng = new Math.seedrandom(emitter_settings.seed); 
     for (var i = 0; i < frames; i++) {
-        if (i % emitter_settings.period == 0) particles_array.push(emit_new(emitter_settings, rng));
-        for (var particle of particles_array) {
-            particle.x += Math.cos(particle.angle);
-            particle.y += Math.sin(particle.angle);
+        if (i % emitter_settings.period == 0) {
+            var newParticle = emit_new(emitter_settings, rng);
+            newParticle.lives_left = particle_settings.lifespan;
+            particles_array.push(newParticle);
+        }
+        var j = 0;
+        while (j < particles_array.length) {
+            var particle = particles_array[j];
+            if (particle.lives_left == 0) {
+                particles_array.splice(j, 1);
+            }
+            else {
+                particle.x += Math.cos(particle.angle);
+                particle.y += Math.sin(particle.angle);
+                particle.lives_left -= 1;
+                j++;
+            }
         }
     }
     return particles_array;
@@ -61,23 +74,11 @@ render_output(run_simulation(
         period: 10,
         seed: 69
     },
-    500
-)).then(function(e) {
-    console.log(e);
-});
-
-render_output(run_simulation(
+    500,
     {
-        startX: 960,
-        startY: 540,
-        particleWidth: 25,
-        particleHeight: 25,
-        angle: Math.PI,
-        angle_variance: Math.PI / 5,
-        period: 10,
-        seed: 69
-    },
-    500
+        lifespan: 500
+    }
 )).then(async function(data) {
+    console.log(data);
     Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
 });
