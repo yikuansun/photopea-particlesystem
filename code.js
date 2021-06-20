@@ -21,8 +21,8 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
                 particles_array.splice(j, 1);
             }
             else {
-                particle.x += Math.cos(particle.angle);
-                particle.y += Math.sin(particle.angle);
+                particle.x += Math.cos(particle.angle) * particle_settings.speed;
+                particle.y += Math.sin(particle.angle) * particle_settings.speed;
                 particle.y += forces.gravity * (particle_settings.lifespan - particle.lives_left);
                 particle.lives_left -= 1;
                 j++;
@@ -77,7 +77,8 @@ render_output(run_simulation(
     },
     500,
     {
-        lifespan: 500
+        lifespan: 500,
+        speed: 2
     },
     {
         gravity: 0.002
