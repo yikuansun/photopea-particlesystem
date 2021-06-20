@@ -5,7 +5,7 @@ const doc_dimensions = {
 
 if (isNaN(doc_dimensions.width) || isNaN(doc_dimensions.height)) location.replace("index.html");
 
-function run_simulation(emitter_settings, frames, particle_settings) {
+function run_simulation(emitter_settings, frames, particle_settings, forces) {
     var particles_array = [];
     var rng = new Math.seedrandom(emitter_settings.seed); 
     for (var i = 0; i < frames; i++) {
@@ -23,6 +23,7 @@ function run_simulation(emitter_settings, frames, particle_settings) {
             else {
                 particle.x += Math.cos(particle.angle);
                 particle.y += Math.sin(particle.angle);
+                particle.y += forces.gravity * (particle_settings.lifespan - particle.lives_left);
                 particle.lives_left -= 1;
                 j++;
             }
@@ -77,6 +78,9 @@ render_output(run_simulation(
     500,
     {
         lifespan: 500
+    },
+    {
+        gravity: 0.002
     }
 )).then(async function(data) {
     console.log(data);
