@@ -5,10 +5,18 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <form action="editor.html" style="position: fixed; top: 50vh; left: 50vw; transform: translate(-50%, -50%); text-align: center;">
-            Document Width: <input name="docWidth" type="number" value="1920" required /> <br />
-            Document Height: <input name="docHeight" type="number" value="1080" required /> <br />
-            <input type="submit" value="Start editing" />
-        </form>
+        <div style="position: fixed; top: 50vh; left: 50vw; transform: translate(-50%, -50%); text-align: center;">
+            Open a document first.
+        </div>
+        <script src="lib/photopea.min.js"></script>
+        <script>
+            (
+                async function() {
+                    var w = parseFloat((await Photopea.runScript(window.parent, "app.echoToOE(app.activeDocument.width.toString());"))[0]);
+                    var h = parseFloat((await Photopea.runScript(window.parent, "app.echoToOE(app.activeDocument.height.toString());"))[0]);
+                    location.replace(`editor.html?docWidth=${w}&docHeight=${h}`);
+                }
+            )();
+        </script>
     </body>
 </html>
