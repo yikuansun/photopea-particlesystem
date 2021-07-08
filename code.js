@@ -37,14 +37,6 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
     return particles_array;
 }
 
-function drawRotatedImage(context, image, x, y, width, height, angle) {
-    context.save(); 
-    context.translate(x, y);
-    context.rotate(angle);
-    context.drawImage(image, -(width / 2), -(height / 2), width, height);
-    context.restore();
-}
-
 function preloadImage(src) {
     return new Promise((resolve, reject) => {
         var img = new Image();
@@ -65,7 +57,7 @@ async function render_output(particles_array) {
     for (var particle of particles_array) {
         var img = new Image(particle.w, particle.h);
         img.src = texture_uri;
-        drawRotatedImage(ctx, img, particle.x, particle.y, particle.w, particle.h, particle.angle);
+        ctx.drawRotatedImage(img, particle.x, particle.y, particle.w, particle.h, particle.angle);
     }
     var outstring = canvas.toDataURL();
     //canvas.remove();
@@ -102,7 +94,7 @@ render_output(run_simulation(
     },
     {
         gravity: 0.005,
-        gravitydirection: 3 * Math.PI / 2
+        gravitydirection: Math.PI / 2
     }
 )).then(async function(data) {
     console.log(data);
