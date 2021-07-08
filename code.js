@@ -26,8 +26,8 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
                 particle.x += forces.gravity * Math.cos(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
                 particle.y += forces.gravity * Math.sin(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
                 if (particle.lives_left < particle_settings.lifespan) {
-                    particle.w -= emitter_settings.particleWidth / particle_settings.lifespan;
-                    particle.h -= emitter_settings.particleHeight / particle_settings.lifespan;
+                    particle.w -= emitter_settings.particleWidth / particle_settings.lifespan * particle_settings.scale_decay;
+                    particle.h -= emitter_settings.particleHeight / particle_settings.lifespan * particle_settings.scale_decay;
                 }
                 particle.lives_left -= 1;
                 j++;
