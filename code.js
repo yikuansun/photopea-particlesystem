@@ -51,7 +51,7 @@ async function render_output(particles_array) {
         ctx.drawRotatedImage(img, particle.x, particle.y, particle.w, particle.h, particle.angle);
     }
     var outstring = canvas.toDataURL();
-    //canvas.remove();
+    canvas.remove();
     return outstring;
 }
 
