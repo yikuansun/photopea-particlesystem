@@ -23,7 +23,8 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
             else {
                 particle.x += Math.cos(particle.angle) * particle_settings.speed;
                 particle.y += Math.sin(particle.angle) * particle_settings.speed;
-                particle.y += forces.gravity * (particle_settings.lifespan - particle.lives_left);
+                particle.x += forces.gravity * Math.cos(forces.gravity) * (particle_settings.lifespan - particle.lives_left);
+                particle.y += forces.gravity * Math.sin(forces.gravity) * (particle_settings.lifespan - particle.lives_left);
                 particle.lives_left -= 1;
                 j++;
             }
@@ -78,10 +79,11 @@ render_output(run_simulation(
     500,
     {
         lifespan: 500,
-        speed: 2
+        speed: 1
     },
     {
-        gravity: 0.002
+        gravity: 0.003,
+        gravitydirection: Math.PI
     }
 )).then(async function(data) {
     console.log(data);
