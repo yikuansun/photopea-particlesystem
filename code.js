@@ -5,85 +5,67 @@ const doc_dimensions = {
 
 if (isNaN(doc_dimensions.width) || isNaN(doc_dimensions.height)) location.replace("index.html");
 
-function run_simulation(emitter_settings, frames, particle_settings, forces) {
-    var particles_array = [];
-    var rng = new Math.seedrandom(emitter_settings.seed); 
-    for (var i = 0; i < frames; i++) {
-        if (i % emitter_settings.period == 0) {
-            var newParticle = emit_new(emitter_settings, rng);
-            newParticle.lives_left = particle_settings.lifespan;
-            particles_array.push(newParticle);
+let system;
+
+function setup() {
+    createCanvas(720, 400);
+    system = new ParticleSystem(createVector(width / 2, 50));
+}
+
+function draw() {
+    background(51);
+    system.addParticle();
+    system.run();
+}
+
+// A simple Particle class
+let Particle = function(position) {
+    this.acceleration = createVector(0, 0.05);
+    this.velocity = createVector(random(-1, 1), random(-1, 0));
+    this.position = position.copy();
+    this.lifespan = 255;
+};
+
+Particle.prototype.run = function() {
+    this.update();
+    this.display();
+};
+
+// Method to update position
+Particle.prototype.update = function(){
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.lifespan -= 2;
+};
+
+// Method to display
+Particle.prototype.display = function() {
+    stroke(200, this.lifespan);
+    strokeWeight(2);
+    fill(127, this.lifespan);
+    ellipse(this.position.x, this.position.y, 12, 12);
+};
+
+// Is the particle still useful?
+Particle.prototype.isDead = function(){
+    return this.lifespan < 0;
+};
+
+let ParticleSystem = function(position) {
+    this.origin = position.copy();
+    this.particles = [];
+};
+
+ParticleSystem.prototype.addParticle = function() {
+    this.particles.push(new Particle(this.origin));
+};
+
+ParticleSystem.prototype.run = function() {
+    for (let i = this.particles.length-1; i >= 0; i--) {
+        let p = this.particles[i];
+        p.run();
+        if (p.isDead()) {
+            this.particles.splice(i, 1);
         }
-        var j = 0;
-        while (j < particles_array.length) {
-            var particle = particles_array[j];
-            if (particle.lives_left == 0) {
-                particles_array.splice(j, 1);
-            }
-            else {
-                particle.x += Math.cos(particle.angle) * particle_settings.speed;
-                particle.y += Math.sin(particle.angle) * particle_settings.speed;
-                particle.y += forces.gravity * (particle_settings.lifespan - particle.lives_left);
-                particle.lives_left -= 1;
-                j++;
-            }
-        }
     }
-    return particles_array;
-}
-
-async function render_output(particles_array) {
-    var svgns = "http://www.w3.org/2000/svg";
-    var svg = document.createElementNS(svgns, "svg");
-    svg.setAttribute("width", doc_dimensions.width);
-    svg.setAttribute("height", doc_dimensions.height);
-    for (var particle of particles_array) {
-        var img = document.createElementNS(svgns, "image");
-        img.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png"));
-        img.setAttribute("x", particle.x - particle.w);
-        img.setAttribute("y", particle.y - particle.h);
-        img.setAttribute("width", particle.w);
-        img.setAttribute("height", particle.h);
-        img.setAttribute("transform", `rotate(${particle.angle * 180 / Math.PI} ${particle.x} ${particle.y})`);
-        svg.appendChild(img);
-    }
-    document.querySelector("#hidden_content").appendChild(svg);
-    var outstring = await rasterize(svg);
-    svg.remove();
-    return outstring;
-}
-
-function emit_new(emitter_settings, rng) {
-    var particle = {
-        x: emitter_settings.startX,
-        y: emitter_settings.startY,
-        w: emitter_settings.particleWidth,
-        h: emitter_settings.particleHeight,
-        angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
-    }
-    return particle;
-}
-
-render_output(run_simulation(
-    {
-        startX: 960,
-        startY: 540,
-        particleWidth: 25,
-        particleHeight: 25,
-        angle: Math.PI,
-        angle_variance: Math.PI / 5,
-        period: 10,
-        seed: 69
-    },
-    500,
-    {
-        lifespan: 500,
-        speed: 2
-    },
-    {
-        gravity: 0.002
-    }
-)).then(async function(data) {
-    console.log(data);
-    Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
-});
+};
