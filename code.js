@@ -37,15 +37,6 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
     return particles_array;
 }
 
-function preloadImage(src) {
-    return new Promise((resolve, reject) => {
-        var img = new Image();
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = src;
-    });
-}
-
 async function render_output(particles_array) {
     var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png");
     var canvas = document.createElement("canvas");
