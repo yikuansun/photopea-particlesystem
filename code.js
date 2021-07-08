@@ -37,24 +37,38 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
     return particles_array;
 }
 
+function drawRotatedImage(context, image, x, y, width, height, angle) {
+    context.save(); 
+    context.translate(x, y);
+    context.rotate(angle);
+    context.drawImage(image, -(width / 2), -(height / 2), width, height);
+    context.restore();
+}
+
+function preloadImage(src) {
+    return new Promise((resolve, reject) => {
+        var img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
+}
+
 async function render_output(particles_array) {
-    var svgns = "http://www.w3.org/2000/svg";
-    var svg = document.createElementNS(svgns, "svg");
-    svg.setAttribute("width", doc_dimensions.width);
-    svg.setAttribute("height", doc_dimensions.height);
+    var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png");
+    var canvas = document.createElement("canvas");
+    canvas.width = doc_dimensions.width;
+    canvas.height = doc_dimensions.height;
+    document.querySelector("#hidden_content").appendChild(canvas);
+    var ctx = canvas.getContext("2d");
+    await preloadImage(texture_uri);
     for (var particle of particles_array) {
-        var img = document.createElementNS(svgns, "image");
-        img.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png"));
-        img.setAttribute("x", particle.x - particle.w / 2);
-        img.setAttribute("y", particle.y - particle.h / 2);
-        img.setAttribute("width", particle.w);
-        img.setAttribute("height", particle.h);
-        img.setAttribute("transform", `rotate(${particle.angle * 180 / Math.PI} ${particle.x} ${particle.y})`);
-        svg.appendChild(img);
+        var img = new Image(particle.w, particle.h);
+        img.src = texture_uri;
+        drawRotatedImage(ctx, img, particle.x, particle.y, particle.w, particle.h, particle.angle);
     }
-    document.querySelector("#hidden_content").appendChild(svg);
-    var outstring = await rasterize(svg);
-    svg.remove();
+    var outstring = canvas.toDataURL();
+    //canvas.remove();
     return outstring;
 }
 
