@@ -28,6 +28,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
                 if (particle.lives_left < particle_settings.lifespan) {
                     particle.w -= emitter_settings.particleWidth / particle_settings.lifespan * particle_settings.scale_decay;
                     particle.h -= emitter_settings.particleHeight / particle_settings.lifespan * particle_settings.scale_decay;
+                    particle.opacity -= particle_settings.opacity_decay / particle_settings.lifespan;
                 }
                 particle.lives_left -= 1;
                 j++;
@@ -48,6 +49,7 @@ async function render_output(particles_array) {
     for (var particle of particles_array) {
         var img = new Image(particle.w, particle.h);
         img.src = texture_uri;
+        ctx.globalAlpha = particle.opacity;
         ctx.drawRotatedImage(img, particle.x, particle.y, particle.w, particle.h, particle.angle);
     }
     var outstring = canvas.toDataURL();
@@ -61,6 +63,7 @@ function emit_new(emitter_settings, rng) {
         y: emitter_settings.startY,
         w: emitter_settings.particleWidth,
         h: emitter_settings.particleHeight,
+        opacity: 1,
         angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
     }
     return particle;
@@ -81,6 +84,7 @@ render_output(run_simulation(
     {
         lifespan: 500,
         scale_decay: 1,
+        opacity_decay: 1,
         speed: 1
     },
     {
