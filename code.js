@@ -41,8 +41,8 @@ async function render_output(particles_array) {
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
         img.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png"));
-        img.setAttribute("x", particle.x - particle.w);
-        img.setAttribute("y", particle.y - particle.h);
+        img.setAttribute("x", particle.x - particle.w / 2);
+        img.setAttribute("y", particle.y - particle.h / 2);
         img.setAttribute("width", particle.w);
         img.setAttribute("height", particle.h);
         img.setAttribute("transform", `rotate(${particle.angle * 180 / Math.PI} ${particle.x} ${particle.y})`);
