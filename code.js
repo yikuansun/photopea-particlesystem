@@ -89,5 +89,6 @@ render_output(run_simulation(
     }
 )).then(async function(data) {
     console.log(data);
+    document.querySelector("#preview").src = data;
     Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
 });
