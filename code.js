@@ -40,7 +40,7 @@ async function render_output(particles_array) {
     svg.setAttribute("height", doc_dimensions.height);
     for (var particle of particles_array) {
         var img = document.createElementNS(svgns, "image");
-        img.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png"));
+        img.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/coin.png"));
         img.setAttribute("x", particle.x - particle.w / 2);
         img.setAttribute("y", particle.y - particle.h / 2);
         img.setAttribute("width", particle.w);
