@@ -7,6 +7,8 @@ if (isNaN(doc_dimensions.width) || isNaN(doc_dimensions.height)) location.replac
 
 let system;
 
+var rng = new Math.seedrandom("hello");
+
 function setup() {
     createCanvas(720, 400);
     system = new ParticleSystem(createVector(width / 2, 50));
@@ -21,7 +23,7 @@ function draw() {
 // A simple Particle class
 let Particle = function(position) {
     this.acceleration = createVector(0, 0.05);
-    this.velocity = createVector(random(-1, 1), random(-1, 0));
+    this.velocity = createVector(rng() * 2 - 1, rng() - 1);
     this.position = position.copy();
     this.lifespan = 255;
 };
