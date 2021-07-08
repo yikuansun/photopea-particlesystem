@@ -25,6 +25,10 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
                 particle.y += Math.sin(particle.angle) * particle_settings.speed;
                 particle.x += forces.gravity * Math.cos(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
                 particle.y += forces.gravity * Math.sin(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
+                if (particle.lives_left < particle_settings.lifespan) {
+                    particle.w -= emitter_settings.particleWidth / particle_settings.lifespan;
+                    particle.h -= emitter_settings.particleHeight / particle_settings.lifespan;
+                }
                 particle.lives_left -= 1;
                 j++;
             }
@@ -79,6 +83,7 @@ render_output(run_simulation(
     500,
     {
         lifespan: 500,
+        scale_decay: 1,
         speed: 1
     },
     {
