@@ -14,10 +14,11 @@ body {
 
 #controlpanel {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
 }
 
 #preview {
