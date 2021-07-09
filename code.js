@@ -28,7 +28,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
                 if (particle.lives_left < particle_settings.lifespan) {
                     particle.w -= emitter_settings.particleWidth / particle_settings.lifespan * particle_settings.scale_decay;
                     particle.h -= emitter_settings.particleHeight / particle_settings.lifespan * particle_settings.scale_decay;
-                    particle.opacity -= particle_settings.opacity_decay / particle_settings.lifespan;
+                    particle.opacity -= emitter_settings.particleOpacity / particle_settings.lifespan * particle_settings.opacity_decay;
                 }
                 particle.lives_left -= 1;
                 j++;
@@ -39,7 +39,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
 }
 
 async function render_output(particles_array) {
-    var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png");
+    var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/flame01.png");
     var canvas = document.createElement("canvas");
     canvas.width = doc_dimensions.width;
     canvas.height = doc_dimensions.height;
@@ -61,9 +61,9 @@ function emit_new(emitter_settings, rng) {
     var particle = {
         x: emitter_settings.startX,
         y: emitter_settings.startY,
-        w: emitter_settings.particleWidth,
-        h: emitter_settings.particleHeight,
-        opacity: 1,
+        w: emitter_settings.particleWidth * (1 + (rng() - 0.5) * emitter_settings.scale_variance),
+        h: emitter_settings.particleHeight * (1 + (rng() - 0.5) * emitter_settings.scale_variance),
+        opacity: emitter_settings.particleOpacity,
         angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
     }
     return particle;
@@ -73,23 +73,25 @@ render_output(run_simulation(
     {
         startX: 960,
         startY: 540,
-        particleWidth: 25,
-        particleHeight: 25,
+        particleWidth: 69,
+        particleHeight: 69,
+        particleOpacity: 0.15,
         angle: 3 * Math.PI / 2,
-        angle_variance: Math.PI / 5,
+        angle_variance: Math.PI / 2,
+        scale_variance: 1.2,
         period: 1,
         seed: 69
     },
     500,
     {
         lifespan: 500,
-        scale_decay: 1,
+        scale_decay: 0.25,
         opacity_decay: 1,
-        speed: 1
+        speed: 0.25
     },
     {
-        gravity: 0.005,
-        gravitydirection: Math.PI / 2
+        gravity: 0.0025,
+        gravitydirection: 3 * Math.PI / 2
     }
 )).then(async function(data) {
     console.log(data);
