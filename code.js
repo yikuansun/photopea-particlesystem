@@ -98,3 +98,108 @@ render_output(run_simulation(
     document.querySelector("#preview").src = data;
     Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
 });
+
+function makePanel(inputs) {
+    for (var id in inputs) {
+        var input = document.createElement("ADVANCED-SLIDER");
+        document.querySelector("#controlpanel").appendChild(input);
+        input.value = inputs[id].val;
+        input.min = inputs[id].min;
+        input.max = inputs[id].max;
+        if (inputs[id].step) input.step = inputs[id].step;
+        var br = document.createElement("br");
+        document.querySelector("#controlpanel").appendChild(br);
+    }
+}
+
+makePanel({
+    startX: {
+        val: doc_dimensions.width / 2,
+        min: 0,
+        max: doc_dimensions.width
+    },
+    startY: {
+        val: doc_dimensions.height / 2,
+        min: 0,
+        max: doc_dimensions.height
+    },
+    particleSize: {
+        val: 69,
+        min: 0,
+        max: 100
+    },
+    particleOpacity: {
+        val: 0.15,
+        min: 0,
+        max: 1,
+        step: 0.01
+    },
+    angle: {
+        val: 3 * Math.PI / 2,
+        min: 0,
+        max: Math.PI * 2,
+        step: 0.01
+    },
+    angle_variance: {
+        val: Math.PI / 2,
+        min: 0,
+        max: Math.PI * 2,
+        step: 0.01
+    },
+    scale_variance: {
+        val: 1.2,
+        min: 0,
+        max: 3,
+        step: 0.01
+    },
+    period: {
+        val: 1,
+        min: 0,
+        max: 10
+    },
+    seed: {
+        val: 69,
+        min: 0,
+        max: 101010
+    },
+    frames: {
+        val: 500,
+        min: 0,
+        max: 1000
+    },
+    lifespan: {
+        val: 500,
+        min: 0,
+        max: 1000
+    },
+    scale_decay: {
+        val: 0.25,
+        min: 0,
+        max: 1,
+        step: 0.01
+    },
+    opacity_decay: {
+        val: 1,
+        min: 0,
+        max: 1,
+        step: 0.01
+    },
+    speed: {
+        val: 0.25,
+        min: 0,
+        max: 5,
+        step: 0.01
+    },
+    gravity: {
+        val: 0.0025,
+        min: 0,
+        max: 0.01,
+        step: 0.0001
+    },
+    gravitydirection: {
+        val: 3 * Math.PI / 2,
+        min: 0,
+        max: Math.PI * 2,
+        step: 0.01
+    },
+});
