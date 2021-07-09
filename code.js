@@ -116,7 +116,7 @@ async function drawFromInputs() {
                 gravity: inputData.gravity,
                 gravitydirection: inputData.gravitydirection
             }
-        ), "orb").then(async function(data) {
+        ), "flame01").then(async function(data) {
             document.querySelector("#preview").src = data;
             Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
         });
