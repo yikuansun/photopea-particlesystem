@@ -59,11 +59,12 @@ async function render_output(particles_array, texture) {
 }
 
 function emit_new(emitter_settings, rng) {
+    var wh = emitter_settings.particleWidth * (1 + (rng() - 0.5) * emitter_settings.scale_variance);
     var particle = {
         x: emitter_settings.startX,
         y: emitter_settings.startY,
-        w: emitter_settings.particleWidth * (1 + (rng() - 0.5) * emitter_settings.scale_variance),
-        h: emitter_settings.particleHeight * (1 + (rng() - 0.5) * emitter_settings.scale_variance),
+        w: wh,
+        h: wh,
         opacity: emitter_settings.particleOpacity,
         angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
     }
