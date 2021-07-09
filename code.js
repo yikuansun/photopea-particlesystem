@@ -12,6 +12,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
         if (i % emitter_settings.period == 0) {
             var newParticle = emit_new(emitter_settings, rng);
             newParticle.lives_left = particle_settings.lifespan;
+            newParticle.texture = particle_settings.texture;
             particles_array.push(newParticle);
         }
         var j = 0;
@@ -39,7 +40,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
 }
 
 async function render_output(particles_array) {
-    var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/flame01.png");
+    var texture_uri = await getdataurl(`https://yikuansun.github.io/photopea-particlesystem/default_textures/${particles_array[0].texture}.png`);
     var canvas = document.createElement("canvas");
     canvas.width = doc_dimensions.width;
     canvas.height = doc_dimensions.height;
@@ -106,6 +107,7 @@ async function drawFromInputs() {
             },
             inputData.frames,
             {
+                texture: "flame01",
                 lifespan: inputData.lifespan,
                 scale_decay: inputData.scale_decay,
                 opacity_decay: inputData.opacity_decay,
