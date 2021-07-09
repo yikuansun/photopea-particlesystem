@@ -39,7 +39,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
 }
 
 async function render_output(particles_array) {
-    var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/whiteorb.png");
+    var texture_uri = await getdataurl("https://yikuansun.github.io/photopea-particlesystem/default_textures/flame01.png");
     var canvas = document.createElement("canvas");
     canvas.width = doc_dimensions.width;
     canvas.height = doc_dimensions.height;
@@ -73,23 +73,23 @@ render_output(run_simulation(
     {
         startX: 960,
         startY: 540,
-        particleWidth: 25,
-        particleHeight: 25,
+        particleWidth: 69,
+        particleHeight: 69,
         angle: 3 * Math.PI / 2,
-        angle_variance: Math.PI / 5,
+        angle_variance: Math.PI / 2,
         period: 1,
         seed: 69
     },
     500,
     {
         lifespan: 500,
-        scale_decay: 1,
+        scale_decay: 0,
         opacity_decay: 1,
-        speed: 1
+        speed: 0.25
     },
     {
-        gravity: 0.005,
-        gravitydirection: Math.PI / 2
+        gravity: 0.0025,
+        gravitydirection: 3 * Math.PI / 2
     }
 )).then(async function(data) {
     console.log(data);
