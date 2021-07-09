@@ -61,8 +61,8 @@ function emit_new(emitter_settings, rng) {
     var particle = {
         x: emitter_settings.startX,
         y: emitter_settings.startY,
-        w: emitter_settings.particleWidth,
-        h: emitter_settings.particleHeight,
+        w: emitter_settings.particleWidth * (1 + (rng() - 0.5) * emitter_settings.scale_variance),
+        h: emitter_settings.particleHeight * (1 + (rng() - 0.5) * emitter_settings.scale_variance),
         opacity: emitter_settings.particleOpacity,
         angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
     }
@@ -78,6 +78,7 @@ render_output(run_simulation(
         particleOpacity: 0.15,
         angle: 3 * Math.PI / 2,
         angle_variance: Math.PI / 2,
+        scale_variance: 1.2,
         period: 1,
         seed: 69
     },
