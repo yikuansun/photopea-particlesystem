@@ -119,9 +119,8 @@ async function drawFromInputs() {
             }
         ), document.querySelector("#texture").value).then(async function(data) {
             document.querySelector("#preview").src = data;
+            resolve(inputData);
         });
-
-        resolve(inputData);
     });
 }
 
