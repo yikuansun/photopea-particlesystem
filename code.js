@@ -69,36 +69,6 @@ function emit_new(emitter_settings, rng) {
     return particle;
 }
 
-render_output(run_simulation(
-    {
-        startX: 960,
-        startY: 540,
-        particleWidth: 69,
-        particleHeight: 69,
-        particleOpacity: 0.15,
-        angle: 3 * Math.PI / 2,
-        angle_variance: Math.PI / 2,
-        scale_variance: 1.2,
-        period: 1,
-        seed: 69
-    },
-    500,
-    {
-        lifespan: 500,
-        scale_decay: 0.25,
-        opacity_decay: 1,
-        speed: 0.25
-    },
-    {
-        gravity: 0.0025,
-        gravitydirection: 3 * Math.PI / 2
-    }
-)).then(async function(data) {
-    console.log(data);
-    document.querySelector("#preview").src = data;
-    Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
-});
-
 async function drawFromInputs() {
     var inputData = {
         startX: parseFloat(document.querySelector("#startX").value),
