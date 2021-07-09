@@ -106,6 +106,7 @@ function makePanel(inputs) {
         input.value = inputs[id].val;
         input.min = inputs[id].min;
         input.max = inputs[id].max;
+        input.numberElement.style.width = "69px";
         if (inputs[id].step) input.step = inputs[id].step;
         var br = document.createElement("br");
         document.querySelector("#controlpanel").appendChild(br);
