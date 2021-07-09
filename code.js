@@ -99,6 +99,61 @@ render_output(run_simulation(
     Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
 });
 
+async function drawFromInputs() {
+    var inputData = {
+        startX: parseFloat(document.querySelector("#startX").value),
+        startY: parseFloat(document.querySelector("#startY").value),
+        particleSize: parseFloat(document.querySelector("#particleSize").value),
+        particleOpacity: parseFloat(document.querySelector("#particleOpacity").value),
+        angle: parseFloat(document.querySelector("#angle").value),
+        angle_variance: parseFloat(document.querySelector("#angle_variance").value),
+        scale_variance: parseFloat(document.querySelector("#scale_variance").value),
+        period: parseFloat(document.querySelector("#period").value),
+        seed: parseFloat(document.querySelector("#seed").value),
+        frames: parseFloat(document.querySelector("#frames").value),
+        lifespan: parseFloat(document.querySelector("#lifespan").value),
+        scale_decay: parseFloat(document.querySelector("#scale_decay").value),
+        opacity_decay: parseFloat(document.querySelector("#opacity_decay").value),
+        speed: parseFloat(document.querySelector("#speed").value),
+        gravity: parseFloat(document.querySelector("#gravity").value),
+        gravitydirection: parseFloat(document.querySelector("#gravitydirection").value),
+    };
+
+
+    return new Promise(function(resolve, reject) {
+        render_output(run_simulation(
+            {
+                startX: inputData.startX,
+                startY: inputData.startY,
+                particleWidth: inputData.particleSize,
+                particleHeight: inputData.particleSize,
+                particleOpacity: inputData.particleOpacity,
+                angle: inputData.angle,
+                angle_variance: inputData.angle_variance,
+                scale_variance: inputData.scale_variance,
+                period: inputData.period,
+                seed: inputData.seed
+            },
+            inputData.frames,
+            {
+                lifespan: inputData.lifespan,
+                scale_decay: inputData.scale_decay,
+                opacity_decay: inputData.opacity_decay,
+                speed: inputData.speed
+            },
+            {
+                gravity: inputData.gravity,
+                gravitydirection: inputData.gravitydirection
+            }
+        )).then(async function(data) {
+            document.querySelector("#preview").src = data;
+            Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
+        });
+
+        resolve(inputData);
+    });
+}
+
 function makePanel(inputs) {
     for (var id in inputs) {
         var nametag = document.createElement("div");
@@ -113,6 +168,7 @@ function makePanel(inputs) {
         input.min = inputs[id].min;
         input.max = inputs[id].max;
         input.numberElement.style.width = "69px";
+        input.addEventListener("input", drawFromInputs);
         if (inputs[id].step) input.step = inputs[id].step;
         var br = document.createElement("br");
         document.querySelector("#controlpanel").appendChild(br);
@@ -226,3 +282,5 @@ makePanel({
         step: 0.01
     },
 });
+
+drawFromInputs();
