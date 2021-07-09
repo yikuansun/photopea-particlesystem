@@ -39,8 +39,8 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
     return particles_array;
 }
 
-async function render_output(particles_array) {
-    var texture_uri = await getdataurl(`https://yikuansun.github.io/photopea-particlesystem/default_textures/${particles_array[0].texture}.png`);
+async function render_output(particles_array, texture) {
+    var texture_uri = await getdataurl(`https://yikuansun.github.io/photopea-particlesystem/default_textures/${texture}.png`);
     var canvas = document.createElement("canvas");
     canvas.width = doc_dimensions.width;
     canvas.height = doc_dimensions.height;
@@ -107,7 +107,6 @@ async function drawFromInputs() {
             },
             inputData.frames,
             {
-                texture: "flame01",
                 lifespan: inputData.lifespan,
                 scale_decay: inputData.scale_decay,
                 opacity_decay: inputData.opacity_decay,
@@ -117,7 +116,7 @@ async function drawFromInputs() {
                 gravity: inputData.gravity,
                 gravitydirection: inputData.gravitydirection
             }
-        )).then(async function(data) {
+        ), "orb").then(async function(data) {
             document.querySelector("#preview").src = data;
             Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
         });
