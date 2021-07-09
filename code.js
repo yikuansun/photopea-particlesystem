@@ -73,24 +73,24 @@ render_output(run_simulation(
     {
         startX: 960,
         startY: 540,
-        particleWidth: 20,
-        particleHeight: 20,
-        particleOpacity: 0.8,
+        particleWidth: 69,
+        particleHeight: 69,
+        particleOpacity: 0.15,
         angle: 3 * Math.PI / 2,
-        angle_variance: 2 * Math.PI,
+        angle_variance: Math.PI / 2,
         period: 1,
         seed: 69
     },
-    690,
+    500,
     {
-        lifespan: 690,
-        scale_decay: -4,
+        lifespan: 500,
+        scale_decay: 0,
         opacity_decay: 1,
         speed: 0.25
     },
     {
-        gravity: 0,
-        gravitydirection: 0
+        gravity: 0.0025,
+        gravitydirection: 3 * Math.PI / 2
     }
 )).then(async function(data) {
     console.log(data);
