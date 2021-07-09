@@ -101,6 +101,11 @@ render_output(run_simulation(
 
 function makePanel(inputs) {
     for (var id in inputs) {
+        var nametag = document.createElement("div");
+        nametag.style.display = "inline-block";
+        nametag.style.width = "150px";
+        nametag.innerText = inputs[id].name;
+        document.querySelector("#controlpanel").appendChild(nametag);
         var input = document.createElement("ADVANCED-SLIDER");
         document.querySelector("#controlpanel").appendChild(input);
         input.value = inputs[id].val;
@@ -115,89 +120,105 @@ function makePanel(inputs) {
 
 makePanel({
     startX: {
+        name: "Origin X",
         val: doc_dimensions.width / 2,
         min: 0,
         max: doc_dimensions.width
     },
     startY: {
+        name: "Origin Y",
         val: doc_dimensions.height / 2,
         min: 0,
         max: doc_dimensions.height
     },
     particleSize: {
+        name: "Particle Size",
         val: 69,
         min: 0,
         max: 100
     },
     particleOpacity: {
+        name: "Particle Opacity",
         val: 0.15,
         min: 0,
         max: 1,
         step: 0.01
     },
     angle: {
+        name: "Emitter Angle",
         val: 3 * Math.PI / 2,
         min: 0,
         max: Math.PI * 2,
         step: 0.01
     },
     angle_variance: {
+        name: "Angle Variance",
         val: Math.PI / 2,
         min: 0,
         max: Math.PI * 2,
         step: 0.01
     },
     scale_variance: {
+        name: "Size Variance",
         val: 1.2,
         min: 0,
         max: 3,
         step: 0.01
     },
     period: {
+        name: "Emitter Period",
         val: 1,
         min: 0,
         max: 10
     },
     seed: {
+        name: "Random Seed",
         val: 69,
         min: 0,
         max: 101010
     },
     frames: {
+        name: "Frame",
         val: 500,
         min: 0,
         max: 1000
     },
     lifespan: {
+        name: "Particle Lifespan",
         val: 500,
         min: 0,
         max: 1000
     },
     scale_decay: {
+        name: "Size Decay",
         val: 0.25,
         min: 0,
         max: 1,
         step: 0.01
     },
     opacity_decay: {
+        name: "Opacity Decay",
         val: 1,
         min: 0,
         max: 1,
         step: 0.01
     },
     speed: {
+        name: "Particle Speed",
         val: 0.25,
         min: 0,
         max: 5,
         step: 0.01
     },
     gravity: {
+        name: "Gravity",
         val: 0.0025,
         min: 0,
         max: 0.01,
         step: 0.0001
     },
     gravitydirection: {
+        name: "Gravity Direction",
         val: 3 * Math.PI / 2,
         min: 0,
         max: Math.PI * 2,
