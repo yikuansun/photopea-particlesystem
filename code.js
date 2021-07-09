@@ -85,7 +85,7 @@ render_output(run_simulation(
     500,
     {
         lifespan: 500,
-        scale_decay: 0,
+        scale_decay: 0.25,
         opacity_decay: 1,
         speed: 0.25
     },
