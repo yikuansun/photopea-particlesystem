@@ -162,13 +162,13 @@ makePanel({
     },
     particleSize: {
         name: "Particle Size",
-        val: 69,
+        val: 25,
         min: 0,
         max: 100
     },
     particleOpacity: {
         name: "Particle Opacity",
-        val: 0.15,
+        val: 1,
         min: 0,
         max: 1,
         step: 0.01
@@ -196,7 +196,7 @@ makePanel({
     },
     period: {
         name: "Emitter Period",
-        val: 1,
+        val: 5,
         min: 0,
         max: 10
     },
@@ -220,7 +220,7 @@ makePanel({
     },
     scale_decay: {
         name: "Size Decay",
-        val: 0.25,
+        val: 1,
         min: 0,
         max: 1,
         step: 0.01
@@ -248,7 +248,7 @@ makePanel({
     },
     gravitydirection: {
         name: "Gravity Direction",
-        val: 3 * Math.PI / 2,
+        val: Math.PI / 2,
         min: 0,
         max: Math.PI * 2,
         step: 0.01
