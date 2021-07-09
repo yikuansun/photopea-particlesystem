@@ -116,7 +116,7 @@ async function drawFromInputs() {
                 gravity: inputData.gravity,
                 gravitydirection: inputData.gravitydirection
             }
-        ), "flame01").then(async function(data) {
+        ), document.querySelector("#texture").value).then(async function(data) {
             document.querySelector("#preview").src = data;
             Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
         });
@@ -127,6 +127,8 @@ async function drawFromInputs() {
 
 function makePanel(inputs) {
     for (var id in inputs) {
+        var br = document.createElement("br");
+        document.querySelector("#controlpanel").appendChild(br);
         var nametag = document.createElement("div");
         nametag.style.display = "inline-block";
         nametag.style.width = "150px";
@@ -141,9 +143,8 @@ function makePanel(inputs) {
         input.numberElement.style.width = "69px";
         input.addEventListener("input", drawFromInputs);
         if (inputs[id].step) input.step = inputs[id].step;
-        var br = document.createElement("br");
-        document.querySelector("#controlpanel").appendChild(br);
     }
+    document.querySelector("#texture").addEventListener("input", drawFromInputs);
 }
 
 makePanel({
