@@ -9,6 +9,7 @@ body {
     width: 100vw;
     height: 100vh;
     margin: 0;
+    user-select: none;
 }
 
 #controlpanel {
@@ -24,4 +25,5 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -webkit-user-drag: none;
 }
