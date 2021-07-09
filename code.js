@@ -28,7 +28,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
                 if (particle.lives_left < particle_settings.lifespan) {
                     particle.w -= emitter_settings.particleWidth / particle_settings.lifespan * particle_settings.scale_decay;
                     particle.h -= emitter_settings.particleHeight / particle_settings.lifespan * particle_settings.scale_decay;
-                    particle.opacity -= particle_settings.opacity_decay / particle_settings.lifespan;
+                    particle.opacity -= emitter_settings.particleOpacity / particle_settings.lifespan * particle_settings.opacity_decay;
                 }
                 particle.lives_left -= 1;
                 j++;
@@ -63,7 +63,7 @@ function emit_new(emitter_settings, rng) {
         y: emitter_settings.startY,
         w: emitter_settings.particleWidth,
         h: emitter_settings.particleHeight,
-        opacity: 1,
+        opacity: emitter_settings.particleOpacity,
         angle: emitter_settings.angle + (rng() - 0.5) * emitter_settings.angle_variance
     }
     return particle;
@@ -75,6 +75,7 @@ render_output(run_simulation(
         startY: 540,
         particleWidth: 20,
         particleHeight: 20,
+        particleOpacity: 0.8,
         angle: 3 * Math.PI / 2,
         angle_variance: 2 * Math.PI,
         period: 1,
