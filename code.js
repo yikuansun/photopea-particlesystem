@@ -119,7 +119,6 @@ async function drawFromInputs() {
             }
         ), document.querySelector("#texture").value).then(async function(data) {
             document.querySelector("#preview").src = data;
-            Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
         });
 
         resolve(inputData);
@@ -143,9 +142,21 @@ function makePanel(inputs) {
         input.value = inputs[id].val;
         input.numberElement.style.width = "69px";
         input.addEventListener("input", drawFromInputs);
+        input.addEventListener("change", function() {
+            drawFromInputs().then(function(data) {
+                Photopea.runScript(window.parent, `app.activeDocument.activeLayer.remove();`);
+                Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
+            });
+        });
         if (inputs[id].step) input.step = inputs[id].step;
     }
     document.querySelector("#texture").addEventListener("input", drawFromInputs);
+    document.querySelector("#texture").addEventListener("change", function() {
+        drawFromInputs().then(function(data) {
+            Photopea.runScript(window.parent, `app.activeDocument.activeLayer.remove();`);
+            Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
+        });
+    });
 }
 
 makePanel({
@@ -256,4 +267,6 @@ makePanel({
     },
 });
 
-drawFromInputs();
+drawFromInputs().then(function(data) {
+    Photopea.runScript(window.parent, `app.open("${data}", null, true);`);
+});
