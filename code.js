@@ -136,6 +136,7 @@ function makePanel(inputs) {
         var input = document.createElement("ADVANCED-SLIDER");
         document.querySelector("#controlpanel").appendChild(input);
         input.id = id;
+        input.step = inputs[id].step
         input.min = inputs[id].min;
         input.max = inputs[id].max;
         input.value = inputs[id].val;
