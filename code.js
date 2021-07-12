@@ -24,8 +24,8 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
             else {
                 particle.x += Math.cos(particle.angle) * particle_settings.speed;
                 particle.y += Math.sin(particle.angle) * particle_settings.speed;
-                particle.x += forces.gravity * Math.cos(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
-                particle.y += forces.gravity * Math.sin(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
+                particle.x += forces.gravity / 100 * Math.cos(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
+                particle.y += forces.gravity / 100 * Math.sin(forces.gravitydirection) * (particle_settings.lifespan - particle.lives_left);
                 if (particle.lives_left < particle_settings.lifespan) {
                     particle.w -= emitter_settings.particleWidth / particle_settings.lifespan * particle_settings.scale_decay;
                     particle.h -= emitter_settings.particleHeight / particle_settings.lifespan * particle_settings.scale_decay;
@@ -252,10 +252,10 @@ makePanel({
     },
     gravity: {
         name: "Gravity",
-        val: 0.0025,
+        val: 0.25,
         min: 0,
-        max: 0.01,
-        step: 0.0001
+        max: 1,
+        step: 0.01
     },
     gravitydirection: {
         name: "Gravity Direction",
