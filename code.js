@@ -9,7 +9,7 @@ function run_simulation(emitter_settings, frames, particle_settings, forces) {
     var particles_array = [];
     var rng = new Math.seedrandom(emitter_settings.seed); 
     for (var i = 0; i < frames; i++) {
-        if (i % emitter_settings.period == 0) {
+        if (i % Math.floor(emitter_settings.period) == 0) {
             var newParticle = emit_new(emitter_settings, rng);
             newParticle.lives_left = particle_settings.lifespan;
             newParticle.texture = particle_settings.texture;
