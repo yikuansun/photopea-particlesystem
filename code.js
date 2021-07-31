@@ -71,27 +71,7 @@ function emit_new(emitter_settings, rng) {
     return particle;
 }
 
-async function drawFromInputs() {
-    var inputData = {
-        startX: parseFloat(document.querySelector("#startX").value),
-        startY: parseFloat(document.querySelector("#startY").value),
-        particleSize: parseFloat(document.querySelector("#particleSize").value),
-        particleOpacity: parseFloat(document.querySelector("#particleOpacity").value),
-        angle: parseFloat(document.querySelector("#angle").value),
-        angle_variance: parseFloat(document.querySelector("#angle_variance").value),
-        scale_variance: parseFloat(document.querySelector("#scale_variance").value),
-        period: parseFloat(document.querySelector("#period").value),
-        seed: parseFloat(document.querySelector("#seed").value),
-        frames: parseFloat(document.querySelector("#frames").value),
-        lifespan: parseFloat(document.querySelector("#lifespan").value),
-        scale_decay: parseFloat(document.querySelector("#scale_decay").value),
-        opacity_decay: parseFloat(document.querySelector("#opacity_decay").value),
-        speed: parseFloat(document.querySelector("#speed").value),
-        gravity: parseFloat(document.querySelector("#gravity").value),
-        gravitydirection: parseFloat(document.querySelector("#gravitydirection").value),
-    };
-
-
+async function drawFromInputs(inputData) {
     return new Promise(function(resolve, reject) {
         render_output(run_simulation(
             {
@@ -117,156 +97,71 @@ async function drawFromInputs() {
                 gravity: inputData.gravity,
                 gravitydirection: inputData.gravitydirection
             }
-        ), document.querySelector("#texture").value).then(async function(data) {
+        ), inputData.texture).then(async function(data) {
             document.querySelector("#preview").src = data;
             resolve(inputData);
         });
     });
 }
 
-function makePanel(inputs) {
-    for (var id in inputs) {
-        var br = document.createElement("br");
-        document.querySelector("#controlpanel").appendChild(br);
-        var nametag = document.createElement("div");
-        nametag.style.display = "inline-block";
-        nametag.style.width = "150px";
-        nametag.innerText = inputs[id].name;
-        document.querySelector("#controlpanel").appendChild(nametag);
-        var input = document.createElement("ADVANCED-SLIDER");
-        document.querySelector("#controlpanel").appendChild(input);
-        input.id = id;
-        input.step = inputs[id].step
-        input.min = inputs[id].min;
-        input.max = inputs[id].max;
-        input.value = inputs[id].val;
-        input.numberElement.style.width = "69px";
-        input.addEventListener("input", drawFromInputs);
-        input.addEventListener("change", function() {
-            drawFromInputs().then(function(data) {
-                Photopea.runScript(window.parent, `app.activeDocument.activeLayer.remove();`);
-                Photopea.runScript(window.parent, `app.open("${document.querySelector("#preview").src}", null, true);`);
-            });
-        });
-        if (inputs[id].step) input.step = inputs[id].step;
-    }
-    document.querySelector("#texture").addEventListener("input", drawFromInputs);
-    document.querySelector("#texture").addEventListener("change", function() {
-        drawFromInputs().then(function(data) {
-            Photopea.runScript(window.parent, `app.activeDocument.activeLayer.remove();`);
-            Photopea.runScript(window.parent, `app.open("${document.querySelector("#preview").src}", null, true);`);
+var inputsObj = {
+    texture: "orb",
+    startX:  doc_dimensions.width / 2,
+    startY: doc_dimensions.height / 2,
+    particleSize: 25,
+    particleOpacity: 1,
+    angle: 3 * Math.PI / 2,
+    angle_variance: Math.PI / 2,
+    scale_variance: 1.2,
+    period: 5,
+    seed: 69,
+    frames: 500,
+    lifespan: 500,
+    scale_decay: 1,
+    opacity_decay: 1,
+    speed: 0.25,
+    gravity: 0.25,
+    gravitydirection: Math.PI / 2,
+};
+var gui = new dat.GUI();
+gui.add(inputsObj, "texture", ["orb", "flame01", "smoke01"]);
+var emitterFolder = gui.addFolder("Emitter");
+emitterFolder.add(inputsObj, "startX", 0, doc_dimensions.width);
+emitterFolder.add(inputsObj, "startY", 0, doc_dimensions.height);
+emitterFolder.add(inputsObj, "particleSize", 0, 100);
+emitterFolder.add(inputsObj, "particleOpacity", 0, 1);
+emitterFolder.add(inputsObj, "angle", 0, Math.PI * 2);
+emitterFolder.add(inputsObj, "angle_variance", 0, Math.PI * 2);
+emitterFolder.add(inputsObj, "scale_variance", 0, 3);
+emitterFolder.add(inputsObj, "period", 0, 5);
+emitterFolder.add(inputsObj, "seed", 0, 1111);
+gui.add(inputsObj, "frames", 0, 1000);
+var particleFolder = gui.addFolder("Particle");
+particleFolder.add(inputsObj, "lifespan", 0, 1000);
+particleFolder.add(inputsObj, "scale_decay", 0, 1);
+particleFolder.add(inputsObj, "opacity_decay", 0, 1);
+particleFolder.add(inputsObj, "speed", 0, 5);
+var forcesFolder = gui.addFolder("Forces");
+forcesFolder.add(inputsObj, "gravity", 0, 1);
+forcesFolder.add(inputsObj, "gravitydirection", 0, Math.PI * 2);
+var myControllers = gui.getRoot().__controllers;
+for (var folder in gui.getRoot().__folders) {
+    var myFolder = gui.getRoot().__folders[folder];
+    myControllers = myControllers.concat(myFolder.__controllers);
+}
+for (var controller of myControllers) {
+    controller.onChange(function() {
+        drawFromInputs(inputsObj);
+    });
+    controller.onFinishChange(function() {
+        drawFromInputs(inputsObj).then(async function(data) {
+            await Photopea.runScript(window.parent, `app.activeDocument.activeLayer.remove();`);
+            await Photopea.runScript(window.parent, `app.open("${document.querySelector("#preview").src}", null, true);`);
         });
     });
 }
-
-makePanel({
-    startX: {
-        name: "Origin X",
-        val: doc_dimensions.width / 2,
-        min: 0,
-        max: doc_dimensions.width
-    },
-    startY: {
-        name: "Origin Y",
-        val: doc_dimensions.height / 2,
-        min: 0,
-        max: doc_dimensions.height
-    },
-    particleSize: {
-        name: "Particle Size",
-        val: 25,
-        min: 0,
-        max: 100
-    },
-    particleOpacity: {
-        name: "Particle Opacity",
-        val: 1,
-        min: 0,
-        max: 1,
-        step: 0.01
-    },
-    angle: {
-        name: "Emitter Angle",
-        val: 3 * Math.PI / 2,
-        min: 0,
-        max: Math.PI * 2,
-        step: 0.01
-    },
-    angle_variance: {
-        name: "Angle Variance",
-        val: Math.PI / 2,
-        min: 0,
-        max: Math.PI * 2,
-        step: 0.01
-    },
-    scale_variance: {
-        name: "Size Variance",
-        val: 1.2,
-        min: 0,
-        max: 3,
-        step: 0.01
-    },
-    period: {
-        name: "Emitter Period",
-        val: 5,
-        min: 0,
-        max: 10
-    },
-    seed: {
-        name: "Random Seed",
-        val: 69,
-        min: 0,
-        max: 101010
-    },
-    frames: {
-        name: "Frame",
-        val: 500,
-        min: 0,
-        max: 1000
-    },
-    lifespan: {
-        name: "Particle Lifespan",
-        val: 500,
-        min: 0,
-        max: 1000
-    },
-    scale_decay: {
-        name: "Size Decay",
-        val: 1,
-        min: 0,
-        max: 1,
-        step: 0.01
-    },
-    opacity_decay: {
-        name: "Opacity Decay",
-        val: 1,
-        min: 0,
-        max: 1,
-        step: 0.01
-    },
-    speed: {
-        name: "Particle Speed",
-        val: 0.25,
-        min: 0,
-        max: 5,
-        step: 0.01
-    },
-    gravity: {
-        name: "Gravity",
-        val: 0.25,
-        min: 0,
-        max: 1,
-        step: 0.01
-    },
-    gravitydirection: {
-        name: "Gravity Direction",
-        val: Math.PI / 2,
-        min: 0,
-        max: Math.PI * 2,
-        step: 0.01
-    },
-});
-
-drawFromInputs().then(function(data) {
+gui.show();
+gui.open();
+drawFromInputs(inputsObj).then(function(data) {
     Photopea.runScript(window.parent, `app.open("${document.querySelector("#preview").src}", null, true);`);
 });
