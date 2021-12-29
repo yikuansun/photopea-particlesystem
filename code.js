@@ -124,16 +124,17 @@ var inputsObj = {
     gravitydirection: Math.PI / 2,
 };
 var gui = new dat.GUI();
+
 var availTextures = [];
-fetch("https://api.github.com/repos/yikuansun/photopea-particlesystem/contents/default_textures").then(function(x) {
-    x.text().then(function(y) {
-        var returnedObj = JSON.parse(y);
-        for (var littleObj of returnedObj) {
-            availTextures.push(littleObj.name.split(".png")[0]);
-        }
-        gui.add(inputsObj, "texture", availTextures);
-    });
-});
+var request = new XMLHttpRequest();
+request.open('GET', "https://api.github.com/repos/yikuansun/photopea-particlesystem/contents/default_textures", false);
+request.send();
+var returnedObj = JSON.parse(request.responseText);
+for (var littleObj of returnedObj) {
+    availTextures.push(littleObj.name.split(".png")[0]);
+}
+gui.add(inputsObj, "texture", availTextures);
+
 var emitterFolder = gui.addFolder("Emitter");
 emitterFolder.add(inputsObj, "startX", 0, doc_dimensions.width);
 emitterFolder.add(inputsObj, "startY", 0, doc_dimensions.height);
