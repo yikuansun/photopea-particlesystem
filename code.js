@@ -104,15 +104,6 @@ async function drawFromInputs(inputData) {
     });
 }
 
-var availTextures = [];
-fetch("https://api.github.com/repos/yikuansun/photopea-particlesystem/contents/default_textures").then(function(x) {
-    x.text().then(function(y) {
-        var returnedObj = JSON.parse(y);
-        for (var littleObj of returnedObj) {
-            availTextures.push(littleObj.name.split(".png")[0]);
-        }
-    });
-});
 var inputsObj = {
     texture: "circle_05",
     startX:  doc_dimensions.width / 2,
@@ -133,7 +124,16 @@ var inputsObj = {
     gravitydirection: Math.PI / 2,
 };
 var gui = new dat.GUI();
-gui.add(inputsObj, "texture", availTextures);
+var availTextures = [];
+fetch("https://api.github.com/repos/yikuansun/photopea-particlesystem/contents/default_textures").then(function(x) {
+    x.text().then(function(y) {
+        var returnedObj = JSON.parse(y);
+        for (var littleObj of returnedObj) {
+            availTextures.push(littleObj.name.split(".png")[0]);
+        }
+        gui.add(inputsObj, "texture", availTextures);
+    });
+});
 var emitterFolder = gui.addFolder("Emitter");
 emitterFolder.add(inputsObj, "startX", 0, doc_dimensions.width);
 emitterFolder.add(inputsObj, "startY", 0, doc_dimensions.height);
